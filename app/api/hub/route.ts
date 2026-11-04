@@ -1,18 +1,19 @@
-import { env } from 'cloudflare:workers';
+export const maxDuration=60;
+import {bindings,configured,type Database,type Bucket} from '../../../lib/runtime';
+import {identity} from '../../../lib/session';
+export const runtime='nodejs';export const dynamic='force-dynamic';
 import { PET_TYPES, text, picture, snapshot } from '../../../lib/hub-validation';
 
 const json=(data:unknown,status=200)=>Response.json(data,{status,headers:{'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});
-type Bindings={DB:D1Database,BUCKET:R2Bucket};
-const bindings=()=>env as unknown as Bindings;
-const identity=(r:Request)=>r.headers.get('oai-authenticated-user-id');
 const key=()=>crypto.randomUUID();
 const publicId=async(s:string)=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)))).map(x=>x.toString(16).padStart(2,'0')).join('');
-async function scope(db:D1Database,user:string){const m=await db.prepare('SELECT owner FROM family_members WHERE user = ?').bind(user).first<{owner:string}>();return m?.owner||user;}
-async function loadSpace(db:D1Database,bucket:R2Bucket,owner:string){const row=await db.prepare('SELECT revision, object_key FROM cloud_spaces WHERE owner = ?').bind(owner).first<{revision:number,object_key:string}>();if(!row)return {revision:0,data:null};const obj=await bucket.get(row.object_key);if(!obj)throw Error('云端档案暂时无法读取，请稍后再试');return {revision:row.revision,data:JSON.parse(await obj.text())};}
-async function member(db:D1Database,id:string,user:string){return await db.prepare("SELECT id FROM social_invites WHERE id = ? AND status = 'accepted' AND (sender = ? OR receiver = ?)").bind(id,user,user).first();}
+async function scope(db:Database,user:string){const m=await db.prepare('SELECT owner FROM family_members WHERE user = ?').bind(user).first<{owner:string}>();return m?.owner||user;}
+async function loadSpace(db:Database,bucket:Bucket,owner:string){const row=await db.prepare('SELECT revision, object_key FROM cloud_spaces WHERE owner = ?').bind(owner).first<{revision:number,object_key:string}>();if(!row)return {revision:0,data:null};const obj=await bucket.get(row.object_key);if(!obj)throw Error('云端档案暂时无法读取，请稍后再试');return {revision:row.revision,data:JSON.parse(await obj.text())};}
+async function member(db:Database,id:string,user:string){return await db.prepare("SELECT id FROM social_invites WHERE id = ? AND status = 'accepted' AND (sender = ? OR receiver = ?)").bind(id,user,user).first();}
 export async function GET(request:Request){
+ if(!configured())return json({ok:true,signedIn:false,configured:false,posts:[],friends:[],comments:[],likes:[],bookmarks:[],following:[],blocked:[],invites:[]});
   try {
-    const {DB:db,BUCKET:bucket}=bindings();const user=identity(request);
+    const {DB:db,BUCKET:bucket}=bindings();const user=await identity(request);
     const posts=await db.prepare('SELECT p.*, (SELECT COUNT(*) FROM social_likes l WHERE l.post_id = p.id) AS likes FROM social_posts p WHERE p.deleted = 0 ORDER BY p.created_at DESC LIMIT 100').all<any>();
     const pets=await db.prepare('SELECT id, data FROM public_pets WHERE visible = 1 ORDER BY updated_at DESC LIMIT 300').all<any>();
     const publicComments=await db.prepare('SELECT id, post_id, name, message AS text, created_at FROM social_comments WHERE post_id IN (SELECT id FROM social_posts WHERE deleted=0 ORDER BY created_at DESC LIMIT 100) ORDER BY created_at LIMIT 1000').all<any>();
@@ -31,9 +32,10 @@ export async function GET(request:Request){
   }catch{return json({ok:false,error:'云端服务暂时不可用，本机记录仍可使用。'},503);}
 }
 export async function POST(request:Request){
+ if(!configured())return json({ok:false,error:'云端服务尚未配置，本机内容已保留。'},503);
   const origin=request.headers.get('origin');
   if(origin&&origin!==new URL(request.url).origin)return json({ok:false,error:'请从网站内操作。'},403);
-  const user=identity(request);if(!user)return json({ok:false,error:'请先登录，再使用云端功能。'},401);
+  const user=await identity(request);if(!user)return json({ok:false,error:'请先登录，再使用云端功能。'},401);
   if(!request.headers.get('content-type')?.includes('application/json'))return json({ok:false,error:'格式不正确'},415);
   const raw=await request.text();if(new TextEncoder().encode(raw).length>16000000)return json({ok:false,error:'本次内容过大，请减少照片或分批记录。'},413);
   let d:any;try{d=JSON.parse(raw);}catch{return json({ok:false,error:'无法读取提交内容'},400);}

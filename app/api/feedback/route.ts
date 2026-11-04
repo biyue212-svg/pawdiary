@@ -1,11 +1,12 @@
-import { env } from 'cloudflare:workers';
+import {database,configured} from '../../../lib/runtime';
+export const runtime='nodejs';
 const categories = new Set(['功能建议','使用问题','宠物类型与照护需求','界面体验','其他']);
 const species = new Set(['不指定','犬','狗','猫','鸟','蜥蜴','仓鼠','兔','龟','鱼','其他']);
 const response = (data: unknown, status=200) => Response.json(data,{status,headers:{'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});
 export async function POST(request: Request) {
   const origin = request.headers.get('origin');
   const own = new URL(request.url).origin;
-  if (origin && origin !== own && !['https://pawdiary-yue-1104.taoxinran3.chatgpt.site','https://petdiary212.fun','http://terminal.local:4173'].includes(origin)) return response({ok:false,error:'请从网站内提交反馈。'},403);
+  if (origin && origin !== own) return response({ok:false,error:'请从网站内提交反馈。'},403);
   if (!request.headers.get('content-type')?.includes('application/json')) return response({ok:false,error:'提交格式不正确。'},415);
   const raw = await request.text();
   if (new TextEncoder().encode(raw).length>12000) return response({ok:false,error:'内容过长，请精简后提交。'},413);
@@ -16,7 +17,7 @@ export async function POST(request: Request) {
   const message=typeof data.message==='string'?data.message.trim():'';
   const contact=typeof data.contact==='string'?data.contact.trim():'';
   if(typeof id!=='string'||!/^[a-zA-Z0-9-]{8,80}$/.test(id)||typeof clientId!=='string'||!/^[a-zA-Z0-9-]{8,80}$/.test(clientId)||typeof category!=='string'||!categories.has(category)||typeof petType!=='string'||!species.has(petType)||message.length<5||message.length>2000||contact.length>120)return response({ok:false,error:'请检查反馈类型与内容，意见需为5至2000字。'},400);
-  const db = (env as unknown as {DB?:D1Database}).DB;
+  const db = configured()?database():null;
   if(!db) return response({ok:false,error:'反馈服务暂时不可用，内容已保留，请稍后重试。'},503);
   try {
     const existing=await db.prepare('SELECT id FROM feedback WHERE id = ? AND client_id = ?').bind(id,clientId).first();

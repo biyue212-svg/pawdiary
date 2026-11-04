@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {mkdir,writeFile} from 'node:fs/promises';
+import {pathToFileURL} from 'node:url';
+import {build} from 'esbuild';
+await mkdir('.sites-runtime',{recursive:true});
+const store=new Map();globalThis.testCookies={get:k=>store.has(k)?{value:store.get(k)}:undefined,set:(k,v,o)=>{if(o.maxAge===0)store.delete(k);else store.set(k,v);assert.equal(o.httpOnly,true);assert.equal(o.sameSite,'lax');}};
+let refreshed=0;globalThis.testAuth={getUser:async token=>token==='valid'?{data:{user:{id:'verified-user'}},error:null}:{data:{user:null},error:{message:'expired'}},refreshSession:async()=>{refreshed++;return {data:{session:{access_token:'valid',refresh_token:'new-refresh',expires_in:3600},user:{id:'verified-user'}},error:null};}};
+const output=await build({entryPoints:['lib/session.ts'],bundle:true,format:'esm',platform:'node',write:false,plugins:[{name:'test-session',setup(b){b.onResolve({filter:/^(next\/headers|\.\/runtime)$/},a=>({path:a.path,namespace:'fixture'}));b.onLoad({filter:/.*/,namespace:'fixture'},a=>({contents:a.path==='next/headers'?'export const cookies=async()=>globalThis.testCookies;':'export const supabase=()=>({auth:globalThis.testAuth});',loader:'js'}));}}]});
+await writeFile('.sites-runtime/session-test.mjs',output.outputFiles[0].text);const {identity,setSession}=await import(pathToFileURL(process.cwd()+'/.sites-runtime/session-test.mjs'));
+assert.equal(await identity(new Request('http://local',{headers:{'oai-authenticated-user-id':'forged'}})),null);
+store.set('paw-access','valid');assert.equal(await identity(),'verified-user');store.set('paw-access','expired');store.set('paw-refresh','refresh');assert.equal(await identity(),'verified-user');assert.equal(refreshed,1);assert.equal(store.get('paw-refresh'),'new-refresh');await setSession(null);assert.equal(store.size,0);
+console.log('Session checks: untrusted identity headers ignored; validated tokens, refresh and HttpOnly logout passed.');
