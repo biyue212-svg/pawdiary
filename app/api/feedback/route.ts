@@ -1,6 +1,6 @@
 import { env } from 'cloudflare:workers';
 const categories = new Set(['功能建议','使用问题','宠物类型与照护需求','界面体验','其他']);
-const species = new Set(['不指定','狗','猫','鸟','蜥蜴','仓鼠','兔','龟','鱼','其他']);
+const species = new Set(['不指定','犬','狗','猫','鸟','蜥蜴','仓鼠','兔','龟','鱼','其他']);
 const response = (data: unknown, status=200) => Response.json(data,{status,headers:{'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});
 export async function POST(request: Request) {
   const origin = request.headers.get('origin');
