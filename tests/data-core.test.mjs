@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import '../public/data-core.js';
+const base={pets:[{id:'ham',name:'仓鼠A',type:'仓鼠',city:'成都'}],current:'ham',records:[{id:'r1',pet:'ham',kind:'体重',day:'2026-11-04',value:.12,unit:'g',photos:[]}],profile:{name:'照护者'},posts:[],drafts:[{draftId:'draft',type:'record',data:{pet:'ham',kind:'护理',day:'2026-11-04',memo:'观察',metric_环境温度:'24',sync:false}}]};
+const safe=PawData.validate({app:'PawDiary',version:2,data:base});
+assert.equal(safe.records[0].value,.12);assert.equal(safe.drafts[0].data.pet,'ham');assert.equal(safe.drafts[0].data.sync,false);assert.equal(safe.drafts[0].data.metric_环境温度,'24');
+const current={...structuredClone(safe),pets:[{id:'cat',name:'猫B',type:'猫'}],records:[{id:'r2',pet:'cat',kind:'日常',day:'2026-11-04'}],posts:[],drafts:[],archivedPets:[],current:'cat'};let n=0;
+const merged=PawData.merge(current,safe,()=>`new${++n}`);
+assert.equal(merged.pets.length,2);assert.equal(merged.records[1].pet,merged.pets[1].id);assert.equal(merged.drafts[0].data.pet,merged.pets[1].id);assert.equal(merged.current,'cat');assert.equal(current.pets.length,1);
+assert.throws(()=>PawData.validate({...base,records:[{...base.records[0],pet:'missing'}]}),/归属/);
+assert.throws(()=>PawData.validate({...base,pets:[...base.pets,...base.pets]}),/重复/);
+assert.throws(()=>PawData.validate({...base,records:[{...base.records[0],value:0}]}),/体重/);
+const malicious=PawData.validate({...base,pets:[{...base.pets[0],photo:'javascript:alert(1)'}],records:[{...base.records[0],photos:['javascript:alert(1)','https://evil.example/image.jpg']}]});assert.equal(malicious.pets[0].photo,'');assert.deepEqual(malicious.records[0].photos,[]);
+const archived=PawData.validate({...base,archivedPets:[{id:'old',name:'旧宠物',type:'鸟',records:[{id:'oldrecord',pet:'old',kind:'护理',day:'2026-01-01'}]}]});const mergedArchive=PawData.merge(current,archived,()=>`new${++n}`);assert.equal(mergedArchive.archivedPets[0].records[0].pet,mergedArchive.archivedPets[0].id);
+console.log('Backup validation and relationship-preserving merge: 12 assertions passed.');

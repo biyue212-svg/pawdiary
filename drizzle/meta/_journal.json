@@ -8,6 +8,13 @@
       "when": 1793810003589,
       "tag": "0000_petite_maginty",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1793817609732,
+      "tag": "0001_parallel_amphibian",
+      "breakpoints": true
     }
   ]
 }

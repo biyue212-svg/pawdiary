@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import vm from 'node:vm';
+const source=await readFile('public/app.js','utf8');
+let rendered='';
+const pets=[{id:'ham',name:'仓鼠A',type:'仓鼠'},{id:'cat',name:'猫B',type:'猫'}];
+const c={pet:()=>pets[1],db:()=>({pets,records:[],posts:[]}),toast:()=>{},petForm:()=>{},isDemo:()=>false,esc:String,uid:()=> 'id',today:()=> '2026-11-04',weightUnit:p=>p?.type==='仓鼠'?'g':'kg',speciesCare:()=>'',field:(label,name,v)=>`<input name="${name}" value="${v}">`,selectField:(l,n,o,v)=>`<select name="${n}" data-value="${v}"></select>`,photoField:()=>'',formButtons:()=>'',openModal:(h,html)=>{rendered=html},act:()=>'',modalDraftType:null,modalOriginal:'',pendingPhotos:[]};vm.createContext(c);
+for(const name of ['recordForm','publishForm'])vm.runInContext(source.split('\n').find(s=>s.startsWith('function '+name+'(')),c);
+c.recordForm('日常','',null,{pet:'ham',kind:'日常',title:'仓鼠A草稿',memo:'只属于A'});
+assert.match(rendered,/name="pet" value="ham"/);assert.match(rendered,/仓鼠A · 默认仅自己可见/);assert.doesNotMatch(rendered,/猫B · 默认仅自己可见/);
+c.recordForm('体重','',null,{pet:'ham',kind:'体重',value:'120',unit:'g'});assert.match(rendered,/name="value" value="120"/);
+c.publishForm('','',{pet:'ham',title:'测试',memo:'内容',sync:false,location:false});assert.match(rendered,/name="sync" type="checkbox" >同时保存/);assert.doesNotMatch(rendered,/name="sync" type="checkbox" checked/);
+c.publishForm('','',{pet:'ham',sync:true,location:true});assert.match(rendered,/name="sync" type="checkbox" checked/);assert.match(rendered,/name="location" type="checkbox" checked/);
+console.log('Regression checks: drafts retain original pet and grams; preview preserves checked and unchecked settings.');
