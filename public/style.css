@@ -24,3 +24,12 @@ dialog:has(.onboarding){width:min(600px,calc(100% - 32px));background:#fcfaf4;bo
 .species-art .pet-category-icon{width:35px;height:35px}
 .avatar-placeholder .pet-category-icon{width:70%;height:70%;max-width:72px;max-height:72px}
 .pill .pet-category-icon{width:22px;height:22px}
+
+.china-location-form{display:block;margin-bottom:18px;padding:18px;background:var(--card);border:1px solid var(--line);border-radius:16px}
+.china-location-picker{border:0;padding:0;margin:0;min-width:0;width:100%}
+.china-location-picker legend{font-weight:600;padding:0;margin-bottom:12px}
+.region-selects{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.china-location-picker .field{min-width:0;margin-bottom:12px}
+.china-location-picker [hidden]{display:none!important}
+.region-search small{display:block;color:var(--muted);font-size:12px;margin-top:6px}
+@media(max-width:600px){.region-selects{grid-template-columns:1fr}.china-location-form{padding:15px}.china-location-form .btn{width:100%}.china-location-picker select,.china-location-picker input{font-size:16px;min-height:44px;width:100%}}

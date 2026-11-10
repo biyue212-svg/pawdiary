@@ -1,0 +1,14 @@
+import fs from 'node:fs';import vm from 'node:vm';import assert from 'node:assert/strict';
+const events={},ctx={window:{},document:{addEventListener:(type,fn)=>events[type]=fn}};vm.createContext(ctx);
+vm.runInContext(fs.readFileSync('public/china-regions.js','utf8'),ctx);vm.runInContext(fs.readFileSync('public/location-picker.js','utf8')+'\nglobalThis.locations=ChinaLocations;',ctx);const loc=ctx.locations;
+assert.equal(loc.provinces.length,34);assert.ok(loc.cities.length>350);
+const ma=loc.find('马鞍山');assert.equal(ma.name,'马鞍山市');assert.equal(ma.province,'安徽省');assert.deepEqual([...ma.districts],['花山区','雨山区','博望区','当涂县','含山县','和县']);
+assert.equal(loc.find('马鞍山市').name,ma.name);assert.ok(loc.find('重庆').districts.includes('城口县'));assert.ok(loc.find('北京').districts.includes('海淀区'));assert.ok(loc.find('上海').districts.includes('徐汇区'));assert.ok(loc.find('香港').districts.includes('中西区'));assert.ok(loc.find('台北'));assert.ok(loc.find('石河子市'));assert.ok(loc.find('五指山市'));
+const nodes={};function control(value=''){return {value,hidden:false,textContent:'',set innerHTML(html){this.html=html;const values=[...html.matchAll(/<option value="([^"]*)"\s*(selected)?/g)];this.value=(values.find(x=>x[2])||values[0])?.[1]||'';},get innerHTML(){return this.html||'';}};}
+for(const key of ['province','city','district','search','status','manual','manual-value'])nodes['[data-region-'+key+']']=control();const box={querySelector:s=>nodes[s]};const form={querySelector:()=>box};
+function change(key,value,type='change'){const t=nodes['[data-region-'+key+']'];t.value=value;t.closest=()=>box;t.matches=sel=>sel==='[data-region-'+key+']';events[type]({target:t});}
+change('province','安徽省');assert.equal(nodes['[data-region-city]'].value,'合肥市');change('city','马鞍山市');assert.match(nodes['[data-region-district]'].innerHTML,/当涂县/);change('district','雨山区');assert.equal(loc.read(form).district,'雨山区');
+change('province','四川省');assert.equal(nodes['[data-region-city]'].value,'成都市');assert.equal(nodes['[data-region-district]'].value,'全部区域');assert.doesNotMatch(nodes['[data-region-district]'].innerHTML,/雨山区/);
+change('search','马鞍山','input');assert.equal(nodes['[data-region-province]'].value,'安徽省');assert.equal(nodes['[data-region-city]'].value,'马鞍山市');assert.equal(loc.read(form).city,'马鞍山');
+change('search','未收录的新城市');assert.equal(nodes['[data-region-district]'].value,'全部区域');change('district','手动填写');nodes['[data-region-manual-value]'].value='新区';assert.equal(loc.read(form).district,'新区');assert.equal(loc.read(form).city,'未收录的新城市');
+assert.match(loc.fields('马鞍山','雨山区'),/value="雨山区" selected/);assert.match(loc.fields('台北','自填区域'),/data-region-manual /);console.log('China location checks passed: coverage, municipalities, direct-administered counties, old city names, search, cascading reset and manual fallback.');

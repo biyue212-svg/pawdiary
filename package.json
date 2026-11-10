@@ -12,7 +12,7 @@
     "start": "next start",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "db:generate": "drizzle-kit generate",
-    "test": "node tests/data-core.test.mjs && node tests/regressions.test.mjs && node tests/postgres.test.mjs && node tests/session.test.mjs"
+    "test": "node tests/data-core.test.mjs && node tests/regressions.test.mjs && node tests/postgres.test.mjs && node tests/session.test.mjs && node tests/locations.test.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
