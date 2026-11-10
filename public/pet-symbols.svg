@@ -1,1 +1,34 @@
-<svg xmlns="http://www.w3.org/2000/svg"><defs><symbol id="dog" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 10C5 5 2 8 3 15l4 4M23 10c4-5 7-2 6 5l-4 4M9 11c0-7 14-7 14 0l2 9c0 11-18 11-18 0l2-9Z M12 16h.1m7.9 0h.1M14 21h4l-2 2-2-2Zm2 2v2m-3 0q3 3 6 0"/></g></symbol><symbol id="cat" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 13V5l7 5h4l7-5v8c7 17-25 17-18 0ZM11 17h.1M21 17h.1m-7 5h4l-2 2-2-2ZM4 20l6 1m12 0 6-1M5 25h5m12 0h5"/></g></symbol><symbol id="bird" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 22c-5-9 1-17 9-15 7-2 11 5 8 10l5 2-6 2c-3 10-13 8-16 1ZM23 11h.1M10 15c8-4 11 7 2 8m-2 5v3m7-3v3M6 31h17"/></g></symbol><symbol id="lizard" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 22c-10 8-12-7-5-6M8 22c-1-6 4-9 9-9l5-6 7 2-2 7-7 3c-1 6-8 7-12 3ZM24 11h.1m-9 4-7-6-3 2m8 11-3 6 3 2m5-11 7 5 3-2"/></g></symbol><symbol id="hamster" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 13C0 8 7 1 11 8m10 0c4-7 11 0 4 5M7 13c-6 13 2 17 9 17s15-4 9-17C23 5 9 5 7 13ZM11 17h.1m9.9 0h.1m-7 4h4l-2 2-2-2Zm2 2v2m-4 0q4 5 8 0"/></g></symbol><symbol id="rabbit" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 14C1-4 15-3 14 12m4 0c-1-15 13-16 3 2M8 16c-6 14 22 20 16 0-3-9-13-9-16 0ZM12 20h.1M20 20h.1m-6 4h4l-2 2-2-2Z"/></g></symbol><symbol id="turtle" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16c0-13 18-13 18 0v8H6v-8Zm18-2c9-6 10 9 0 7M8 10 4 7m4 18-4 4m17-4 3 4M11 11l8 8m0-8-8 8M7 20h16"/></g></symbol><symbol id="fish" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17c8-13 15-10 20-4l7-6v20l-7-6C18 28 11 30 3 17ZM8 16h.1M12 8l4-5 5 6m-8 16 4 4 4-5"/></g></symbol><symbol id="other" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 5v22M5 16h22m-18-7 14 14M9 23 23 9"/></g></symbol></defs></svg>
+<svg xmlns="http://www.w3.org/2000/svg"><defs>
+<symbol id="dog" viewBox="0 0 32 32"><g stroke="#594B43" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path fill="#B77A4A" d="M10 8C4 5 2 9 4 20l5 2m13-14c6-3 8 1 6 12l-5 2"/><path fill="#F4D4A3" d="M8 12c0-9 16-9 16 0v9c0 10-16 10-16 0Z"/><ellipse fill="#FFF5E5" cx="16" cy="22" rx="7" ry="5"/><path fill="#513E35" d="M13.5 20.5q2.5-2 5 0L16 23Z"/><path d="M16 23v2m-3-1q3 3 6 0"/>
+<circle cx="12" cy="17" r="1.15" fill="#443A34" stroke="none"/>
+<circle cx="20" cy="17" r="1.15" fill="#443A34" stroke="none"/>
+</g></symbol>
+<symbol id="cat" viewBox="0 0 32 32"><g stroke="#594B43" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path fill="#ECC38B" d="M6 15 5 5l9 5h4l9-5-1 10c6 16-26 16-20 0Z"/><path fill="#ECA9A0" stroke="none" d="m8 12-1-4 5 3m8 0 5-3-1 5"/><path d="m13 11 1 3m4-3-1 3M3 20l6 1m14 0 6-1M4 24h5m14 0h5"/><path fill="#C87976" d="M14 22h4l-2 2Z"/><path d="M16 24q-2 3-4 1m4-1q2 3 4 1"/>
+<circle cx="11" cy="18" r="1.15" fill="#443A34" stroke="none"/>
+<circle cx="21" cy="18" r="1.15" fill="#443A34" stroke="none"/>
+</g></symbol>
+<symbol id="bird" viewBox="0 0 32 32"><g stroke="#594B43" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path fill="#A9C8C0" d="M7 19c-1-8 4-14 10-13 6 0 8 6 6 12l5 2-6 1c-3 9-13 9-15-2Z"/><path fill="#E8B760" d="m23 12 6 3-6 3Z"/><path fill="#DDEBE3" d="M9 17q11-4 9 4-4 5-9-4Z"/><path d="m11 27-1 3m8-3 1 3M13 6l-1-3m5 3 2-3"/>
+<circle cx="20" cy="12" r="1.15" fill="#443A34" stroke="none"/>
+</g></symbol>
+<symbol id="lizard" viewBox="0 0 32 32"><g stroke="#594B43" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path fill="#9BB890" d="M12 23C3 31 0 22 5 20c-2 4 1 5 5 0L14 12q2-6 8-5l7 4-3 7-7 1-4 6Z"/><path fill="#DAE4BC" stroke="none" d="m14 21 5-7 7 1-2 2-6 2-3 5Z"/><path d="m15 14-5-4-3 2m6 10-4 5 2 2m10-10 3 5 4-1M24 15l3-1"/><circle fill="#E6C378" stroke="none" cx="17" cy="11" r="1"/>
+<circle cx="23" cy="10" r="1.15" fill="#443A34" stroke="none"/>
+</g></symbol>
+<symbol id="hamster" viewBox="0 0 32 32"><g stroke="#594B43" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><circle fill="#D4AE85" cx="8" cy="9" r="5"/><circle fill="#D4AE85" cx="24" cy="9" r="5"/><circle fill="#EBC1B1" stroke="none" cx="8" cy="9" r="2.7"/><circle fill="#EBC1B1" stroke="none" cx="24" cy="9" r="2.7"/><path fill="#EBD3B0" d="M5 18C4 3 28 3 27 18c4 13-26 13-22 0Z"/><ellipse fill="#FFF4DF" stroke="none" cx="16" cy="23" rx="10" ry="5"/><path fill="#BB8277" d="M14 20h4l-2 2Z"/><path fill="#FFF" d="M14 24h4v4h-4Zm2 0v4"/>
+<circle cx="11" cy="18" r="1.15" fill="#443A34" stroke="none"/>
+<circle cx="21" cy="18" r="1.15" fill="#443A34" stroke="none"/>
+</g></symbol>
+<symbol id="rabbit" viewBox="0 0 32 32"><g stroke="#594B43" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path fill="#F4E9DC" d="M10 16C0-3 15-3 14 14m4 0c-1-17 14-17 4 2"/><path stroke="#DFB4AE" stroke-width="2.5" d="M10 7l2 7m9-7-1 7"/><path fill="#F4E9DC" d="M6 22c-2-13 22-13 20 0 0 10-20 10-20 0Z"/><path fill="#C58C8B" d="M14 23h4l-2 2Z"/><path d="M16 25q-2 3-4 1m4-1q2 3 4 1"/>
+<circle cx="12" cy="21" r="1.15" fill="#443A34" stroke="none"/>
+<circle cx="20" cy="21" r="1.15" fill="#443A34" stroke="none"/>
+</g></symbol>
+<symbol id="turtle" viewBox="0 0 32 32"><g stroke="#594B43" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path fill="#A8BA91" d="m9 12-5-2-1 3 4 4m2 7-4 3 3 2 4-4m10-1 3 4 3-2-4-4"/><ellipse fill="#B5C998" cx="26" cy="16" rx="4.5" ry="5"/><path fill="#7F9B78" d="M4 19C3 3 24 3 24 19v5H5Z"/><path fill="#B6C89C" d="m14 10 5 4-2 6h-6l-2-6Z"/><path d="m14 10 1-4M9 14l-5-1m15 1 5-1m-13 7-3 4m9-4 4 4"/>
+<circle cx="28" cy="15" r="1.15" fill="#443A34" stroke="none"/>
+</g></symbol>
+<symbol id="fish" viewBox="0 0 32 32"><g stroke="#594B43" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path fill="#E7B377" d="m20 13 9-6v18l-9-5Z"/><path fill="#E9C18D" d="m10 11 4-7 5 7m-9 11 5 6 4-6"/><path fill="#F2C891" d="M3 17c7-14 17-9 21 0-4 10-14 14-21 0Z"/><path d="M11 12q-4 5 0 10m4-8-2 4 4 2"/>
+<circle cx="8" cy="16" r="1.15" fill="#443A34" stroke="none"/>
+</g></symbol>
+<symbol id="other" viewBox="0 0 32 32"><g stroke="#594B43" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path fill="#E4DCEC" d="M16 5c2-5 7-3 7 2 7-2 10 4 5 8 5 5 1 10-5 8 1 7-6 9-9 3-6 4-11-1-7-6-7-3-5-10 2-10-2-7 4-10 7-5Z"/><path d="M11 18q5 5 10 0"/>
+<circle cx="12" cy="14" r="1.15" fill="#443A34" stroke="none"/>
+<circle cx="20" cy="14" r="1.15" fill="#443A34" stroke="none"/>
+</g></symbol>
+</defs></svg>
